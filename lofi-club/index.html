@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lofi - chill lofi music 🎧</title>
+  <meta name="description" content="Lofi Hiphop Beats to chill and relax to">
+
+  <meta property="og:title" content="lofi.prakgupta - chill lofi music 🎧">
+  <meta property="og:description" content="Lofi Hiphop Beats to chill and relax to." />
+  <meta property="og:url" content="https://lofi.prakgupta.com" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://lofi.prakgupta.com/assets/card.png" />
+  <meta name="twitter:title" content="lofi.prakgupta - chill lofi music 🎧" />
+  <meta name="twitter:description" content="Lofi Hiphop Beats to chill and relax to." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://lofi.prakgupta.com/assets/card.png" />
+
+
+  <link rel="icon" href="https://lofi.prakgupta.com/assets/favicon.ico" type="image/x-icon" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2ZPLL3L9G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-S2ZPLL3L9G');
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <video id="background-video" loop autoplay muted class="fixed inset-0 h-full w-full object-cover z-2"></video>
+
+  <div id="youtube-player" class="fixed inset-0 w-full h-full bg-black bg-opacity-80"></div>
+
+  <div class="fixed inset-y-0 right-0 flex flex-col p-4">
+    <input id="volume-slider" type="range" min="0" max="100"
+      class="w-28 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+
+    <button id="pause-button" class="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded mt-2">
+      <span>Play</span>
+    </button>
+
+    <button id="rain-toggle" class="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded mt-2">
+      <span>Rain: Off</span>
+    </button>
+
+    <button id="change-audio" class="bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded mt-2">
+      <span>Change Audio</span>
+    </button>
+  </div>
+
+  <audio id="rain" src="assets/rain-07.mp3" loop></audio>
+
+
+
+  <a class="hidden-link text-gray-400 hover:text-white" href="https://lofi.prakgupta.com/blog"> Blog </a>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
