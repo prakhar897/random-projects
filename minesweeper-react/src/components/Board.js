@@ -3,102 +3,122 @@ import Cell from './Cell'
 
 const Board = ({height, width, mines}) => {
 
-  const [board, setBoard] = useState([]);
+  const [boardData, setBoardData] = useState([]);
 
 
 
 
-  useEffect(()=>{
-    initBoard();
-  },[]);
+  useEffect(() => {
+    initializeBoard(height, width, mines);
+  }, []);
 
-  const checkIfAllcellsRevealed = () => {
-    for(let i=0;i<height;i++) {
-      for(let j=0;j<width;j++) {
-        if(!board[i][j].revealed){
+  const isGameWon = (board, height, width) => {
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        if (!board[i][j].revealed && board[i][j].value !== -1) {
           return false;
         }
       }
     }
     return true;
-  }
+  };
 
-  const onCellClick = (currentHeight, currentWidth) => {
-    let clickedCell = board[currentHeight][currentWidth];
-    if(clickedCell.value === "Bomb") {
-      alert("You lose, Resetting Board");
-      initBoard();
-    } else {
-      clickedCell.revealed = true;
-      if(checkIfAllcellsRevealed()){
-        alert("You win, Resetting Board");
-        initBoard();
-      }
+  const handleCellClick = (currentHeight, currentWidth) => {
+    const newBoardData = [...boardData]; // Create a copy
+    const clickedCell = newBoardData[currentHeight][currentWidth];
+
+    if (clickedCell.value === -1) {
+      alert('You lose! Resetting Board');
+      initializeBoard(height, width, mines);
+      return; // Early exit on losing click
     }
-  }
+
+    newBoardData[currentHeight][currentWidth].revealed = true;
+    setBoardData(newBoardData);
+
+    if (isGameWon(newBoardData, height, width)) {
+      alert('You win! Resetting Board');
+      initializeBoard(height, width, mines);
+    }
+  };
 
 
   /*
- "" - Not reveled
 
- Bomb =  Bomb
- Number =  number
+ Bomb =  Bomb [-1]
+ Number =  number [0....8]
  
 */
-  const initBoard = (height, width, mines) => {
-
-    for(let i=0;i<height;i++) {
-      board.push([]);
-      for(let j=0;j<width;j++) {
-        board[i].push({"revealed": false, "value": ""});
-      }
+const initializeBoard = (height, width, mines) => {
+  const board = [];
+  for (let i = 0; i < height; i++) {
+    board.push([]);
+    for (let j = 0; j < width; j++) {
+      board[i].push({ revealed: false, value: 0 });
     }
-    let minesPlaced = 0
-    mines = [];
-    while(minesPlaced < mines) {
-      let randomRow = Math.floor(Math.random() * height)
-      let randomCol = Math.floor(Math.random() * width)
-      if(board[randomRow][randomCol].value === ""){
-        board[randomRow][ randomCol] = {"revealed": false, "value": "Bomb"};
-        minesPlaced += 1;
+  }
 
-        let dir = [[1,0], [-1,0], [0,1], [0,-1], [1,1], [1,-1], [-1,1], [-1,-1]];
-        for(let k=0;k<dir.length;k++) {
-          let row = randomRow + dir[k][0];
-          let col = randomCol + dir[k][1];
-          if(row >= 0 && row < height && col >= 0 && col < width) {
-            if(board[row][col].value !== "Bomb") {
-              board[row][col].value = (parseInt(board[row][col].value) + 1).toString();
-            }
+  let minesPlaced = 0;
+  while (minesPlaced < mines) {
+    const randomRow = Math.floor(Math.random() * height);
+    const randomCol = Math.floor(Math.random() * width);
+
+    if (board[randomRow][randomCol].value !== -1) {
+      board[randomRow][randomCol] = { revealed: false, value: -1 };
+      minesPlaced++;
+
+      const directions = [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
+      ];
+
+      for (const dir of directions) {
+        const newRow = randomRow + dir[0];
+        const newCol = randomCol + dir[1];
+
+        if (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width) {
+          if (board[newRow][newCol].value !== -1) {
+            board[newRow][newCol].value++;
           }
         }
       }
     }
-
   }
 
-  const renderBoard = (height, width, mines) => {
-    const rows = [];
-  
-    for (let i = 0; i < height; i++) {
-      const row = [];
-  
-      for (let j = 0; j < width; j++) {
-        row.push(<Cell key={i * width + j} currentHeight={i} currentWidth={j} onCellClick={onCellClick} isClickable={board[i] && board[i][j] && !board[i][j].revealed}/>);
-      }
-  
-      rows.push(<div className="board-row" key={i}>{row}</div>);
-    }
-  
-    return rows;
-  };
+  setBoardData(board);
 
+  console.log(board);
+};
 
-  return (
-    <div id='board'>
-      {renderBoard(height, width, mines)}
+const renderBoard = () => {
+  return boardData.map((row, rowIndex) => (
+    <div className="board-row" key={rowIndex}>
+      {row.map((cell, colIndex) => (
+        <Cell
+          key={rowIndex * width + colIndex}
+          value={cell.revealed ? cell.value : null}
+          currentHeight={rowIndex}
+          currentWidth={colIndex}
+          onCellClick={handleCellClick}
+          isDisabled={cell.revealed}
+        />
+      ))}
     </div>
-  )
+  ));
+};
+
+
+return (
+  <div id="board">
+    {renderBoard()}
+  </div>
+);
 
   
 }

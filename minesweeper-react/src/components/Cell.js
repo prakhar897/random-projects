@@ -2,11 +2,11 @@ import React from 'react'
 
 
 
-const Cell = ({currentHeight, currentWidth, onCellClick, isClickable}) => {
-  
+const Cell = ({value, currentHeight, currentWidth, onCellClick, isDisabled}) => {
+    
     return (
-      <button class="cell" onClick={() => onCellClick(currentHeight, currentWidth)} isClickable={isClickable}>
-
+      <button className="cell" onClick={() => onCellClick(currentHeight, currentWidth)} disabled={isDisabled}>
+      {isDisabled ? value : null}
       </button>
     )
 }

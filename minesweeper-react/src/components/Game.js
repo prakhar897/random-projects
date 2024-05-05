@@ -2,9 +2,9 @@ import React from 'react'
 import Board from './Board'
 
 const Game = () => {
-  const [height, setHeight] = React.useState(10);
-  const [width, setWidth] = React.useState(10);
-  const [mines, setMines] = React.useState(10);
+  const [height, setHeight] = React.useState(3);
+  const [width, setWidth] = React.useState(3);
+  const [mines, setMines] = React.useState(3);
 
   return (
     <div>
